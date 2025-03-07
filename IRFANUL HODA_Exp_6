@@ -1,0 +1,110 @@
+import java.util.*;
+import java.util.stream.*;
+
+public class JavaStreamsLambda {
+
+    // Easy Level: Sorting Employee objects
+    static class Employee {
+        String name;
+        int age;
+        double salary;
+
+        Employee(String name, int age, double salary) {
+            this.name = name;
+            this.age = age;
+            this.salary = salary;
+        }
+
+        @Override
+        public String toString() {
+            return name + ", Age: " + age + ", Salary: " + salary;
+        }
+    }
+
+    public static void easyLevel() {
+        List<Employee> employees = Arrays.asList(
+                new Employee("John", 30, 50000),
+                new Employee("Alice", 25, 60000),
+                new Employee("Bob", 35, 45000)
+        );
+
+        employees.sort(Comparator.comparingDouble(emp -> emp.salary));
+        employees.forEach(System.out::println);
+    }
+
+    // Medium Level: Filtering and sorting students
+    static class Student {
+        String name;
+        double marks;
+
+        Student(String name, double marks) {
+            this.name = name;
+            this.marks = marks;
+        }
+    }
+
+    public static void mediumLevel() {
+        List<Student> students = Arrays.asList(
+                new Student("Emma", 80),
+                new Student("Liam", 70),
+                new Student("Olivia", 90),
+                new Student("Noah", 60)
+        );
+
+        students.stream()
+                .filter(s -> s.marks > 75)
+                .sorted(Comparator.comparingDouble(s -> -s.marks))
+                .forEach(s -> System.out.println(s.name + ": " + s.marks));
+    }
+
+    // Hard Level: Processing a large dataset of products
+    static class Product {
+        String name;
+        String category;
+        double price;
+
+        Product(String name, String category, double price) {
+            this.name = name;
+            this.category = category;
+            this.price = price;
+        }
+    }
+
+    public static void hardLevel() {
+        List<Product> products = Arrays.asList(
+                new Product("Laptop", "Electronics", 1000),
+                new Product("TV", "Electronics", 800),
+                new Product("Fridge", "Appliances", 1200),
+                new Product("Washing Machine", "Appliances", 900)
+        );
+
+        // Grouping by category and finding the most expensive product
+        Map<String, Optional<Product>> mostExpensiveByCategory = products.stream()
+                .collect(Collectors.groupingBy(
+                        p -> p.category,
+                        Collectors.maxBy(Comparator.comparingDouble(p -> p.price))
+                ));
+
+        mostExpensiveByCategory.forEach((category, product) ->
+                System.out.println("Category: " + category + ", Most Expensive: " + product.get().name));
+
+        // Calculating the average price of all products
+        double averagePrice = products.stream()
+                .mapToDouble(p -> p.price)
+                .average()
+                .orElse(0);
+
+        System.out.println("Average Price: " + averagePrice);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Easy Level:");
+        easyLevel();
+        System.out.println("\nMedium Level:");
+        mediumLevel();
+        System.out.println("\nHard Level:");
+        hardLevel();
+    }
+}
+
+// Let me know if you want me to expand or refine any level! 🚀✨
